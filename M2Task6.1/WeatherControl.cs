@@ -10,21 +10,24 @@ namespace M2Task6._1
 {
     internal class WeatherControl : DependencyObject
     {
+        // Объявляем свойсто зависимости
         public static readonly DependencyProperty TemperatureProperty;
 
-        private string windDirection;
+        public string WindDirection { get; set; } // автосвоиство направление ветра
+        public string WindSpeed { get; set; } // автосвойство скорость ветра
 
-
-        public int Temperatyre
+        //Объявляем свойство зависимости температура
+        public int Temperature
         {
             get { return (int) GetValue(TemperatureProperty); }
             set { SetValue(TemperatureProperty, value); }
         }
 
+        //Сатический конструктор выполняем регистрацию сз
         static WeatherControl()
         {
             TemperatureProperty = DependencyProperty.Register(
-                nameof(Temperatyre),
+                nameof(Temperature),
                 typeof(int),
                 typeof(WeatherControl),
                 new PropertyMetadata(
@@ -32,9 +35,9 @@ namespace M2Task6._1
                     null,
                     new CoerceValueCallback(CoerseTemperature)
                 ));
-
         }
 
+        // Метод проверка корректности значений сз
         private static object CoerseTemperature(DependencyObject d, object baseValue)
         {
             int t = (int) baseValue;
@@ -44,10 +47,46 @@ namespace M2Task6._1
             }
             else
             {
-                return $"Значение {t} вне диапазона температур";
+                return 0;
             }
         }
 
-        
+        // Конструктор инициализируем поля 
+        public WeatherControl(int temperature, string windDirection, string windSpeed)
+        {
+            this.Temperature = temperature;
+            this.WindDirection = windDirection;
+            this.WindSpeed = windSpeed;
+        }
+
+        // добавляем перечисление погоды
+        public enum Precipitation
+        {
+            sunny = 0,
+            cloudy = 1,
+            rain = 2,
+            snow = 3
+        }
+
+        public string Print(Precipitation precipitation)
+        {
+            switch (precipitation)
+            {
+                case Precipitation.sunny:
+                    Console.WriteLine("солнечно");
+                    break;
+                case Precipitation.cloudy:
+                    Console.WriteLine("облачно");
+                    break;
+                case Precipitation.rain:
+                    Console.WriteLine("дождь");
+                    break;
+                case Precipitation.snow:
+                    Console.WriteLine("снег");
+                    break;
+            }
+
+            return $"{Temperature} {WindDirection} {WindSpeed} {precipitation}";
+        }
     }
 }

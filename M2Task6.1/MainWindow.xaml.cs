@@ -24,5 +24,7 @@ namespace M2Task6._1
         {
             InitializeComponent();
         }
+
+        
     }
 }
